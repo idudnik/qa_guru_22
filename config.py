@@ -2,6 +2,8 @@ import os
 from appium.options.android import UiAutomator2Options
 from pydantic import BaseModel
 from utils import file
+from dotenv import load_dotenv
+import utils
 
 
 class Config(BaseModel):
@@ -12,6 +14,7 @@ class Config(BaseModel):
     app: str = os.getenv('app')
     platformName: str = os.getenv('platformName')
     platformVersion: str = os.getenv('platformVersion')
+    load_dotenv(dotenv_path=utils.file.abs_path_from_project('.env'))
     userName: str = os.getenv('USER_NAME')
     accessKey: str = os.getenv('ACCESS_KEY')
 
@@ -19,12 +22,11 @@ class Config(BaseModel):
 
         options = UiAutomator2Options()
 
-        if context == 'local_real':
+        if context == 'local':
             options.set_capability('platformName', self.platformName)
             options.set_capability('remote_url', self.remote_url)
             options.set_capability('app', file.abs_path_from_project(self.app))
             options.set_capability('appWaitActivity', self.appWaitActivity)
-
 
         if context == 'bs':
             options.set_capability('remote_url', self.remote_url)
@@ -46,4 +48,4 @@ class Config(BaseModel):
         return options
 
 
-config = Config(context='local_real')
+config = Config(context='bs')

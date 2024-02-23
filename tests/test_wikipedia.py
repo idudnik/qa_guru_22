@@ -3,10 +3,12 @@ from allure_commons._allure import step
 from appium.webdriver.common.appiumby import AppiumBy
 from selene import browser, have
 
+
 @pytest.mark.local
-def test_local_search_appium():
+def test_android_search_wiki_Appium_local(android_mobile_management):
+
     with step("Skip main screen"):
-        browser.element((AppiumBy.ID, "org.wikipedia.alpha:id/fragment_onboarding_skip_button")).click()
+        browser.element((AppiumBy.ID, "org.wikipedia.alpha:id/fragment_onboarding_forward_button")).click()
         browser.element((AppiumBy.ID, "org.wikipedia.alpha:id/primaryTextView")) \
             .should(have.text('New ways to explore'))
 
@@ -35,14 +37,11 @@ def test_local_search_appium():
 
 
 @pytest.mark.bs
-def test_android_search_wiki_Appium_bstack(context):
+def test_android_search_wiki_appium_bstack(android_mobile_management):
     with step('Type search'):
         browser.element((AppiumBy.ACCESSIBILITY_ID, "Search Wikipedia")).click()
-        browser.element((AppiumBy.ID, "org.wikipedia.alpha:id/search_src_text")).type('Appium')
-
+        browser.element((AppiumBy.ID, "org.wikipedia.alpha:id/search_src_text")).type('Appium').click()
     with step('Verify content found'):
         results = browser.all((AppiumBy.ID, 'org.wikipedia.alpha:id/page_list_item_title'))
         results.should(have.size_greater_than(0))
         results.first.should(have.text('Appium'))
-
-

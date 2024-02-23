@@ -5,20 +5,16 @@ import pytest
 
 from selene import browser, support
 from appium import webdriver
-
 from dotenv import load_dotenv
-
-import utils
 from utils import allure_attach
 
 
 def pytest_addoption(parser):
     parser.addoption(
         "--context",
-        default="bstack",
+        default="bs",
         help="Specify the test context"
     )
-
 
 
 def pytest_configure(config):
@@ -55,15 +51,14 @@ def android_mobile_management(context):
 
     yield
 
-    allure_attach.add_screenshot(browser)
+    allure_attach.screenshot()
 
-    allure_attach.add_xml(browser)
-
+    allure_attach.page_source_xml()
 
     session_id = browser.driver.session_id
 
-    with allure.step('tear down app session with id' + session_id):
+    with allure.step('tear down app session with id'):
         browser.quit()
 
-    if context == 'bstack':
-            utils.allure_attach.bstack_video(session_id)
+    if context == 'bs':
+        allure_attach.bstack_video(session_id)

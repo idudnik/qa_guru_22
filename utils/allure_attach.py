@@ -1,8 +1,8 @@
 import allure
 import requests
 
-from selene import browser
 
+from selene import browser
 
 def bstack_video(session_id):
     from config import config as app_config
@@ -24,12 +24,12 @@ def bstack_video(session_id):
     )
 
 
-def page_source_xml(browser):
+def page_source_xml():
     xml = browser.driver.page_source
     allure.attach(body=xml, name='screen xml dump', attachment_type=allure.attachment_type.XML, extension='.xml')
 
 
-def screenshot(browser):
+def screenshot():
     allure.attach(
         browser.driver.get_screenshot_as_png(),
         name='screenshot',
